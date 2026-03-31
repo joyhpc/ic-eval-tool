@@ -1,5 +1,5 @@
 {
-  "name": "lm5060-tool",
+  "name": "ic-eval-tool",
   "private": true,
   "version": "0.0.0",
   "type": "module",

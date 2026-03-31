@@ -138,10 +138,10 @@ export default function App() {
           <div>
             <h1 className="flex items-center gap-2 text-2xl font-bold text-gray-800">
               <Zap className="text-blue-600" />
-              LM5060 智能评估仪表盘
+              IC 智能评估工具
             </h1>
             <p className="mt-1 text-gray-500">
-              High-Side Protection Controller 参数计算与行为仿真器
+              多芯片硬件评估框架，当前加载模块：LM5060 High-Side Protection Controller
             </p>
           </div>
           <div className="hidden items-center gap-4 text-sm text-gray-500 md:flex">
