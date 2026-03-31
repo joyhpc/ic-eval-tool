@@ -13,4 +13,4 @@
 - [x] Build an interactive SVG schematic view bound to calculator and simulator state.
 - [x] Add a CLI verifier that checks the module definition and scenario coverage.
 - [x] Extend automated tests to cover schematic bindings and verifier logic.
-- [ ] Run full closed-loop verification and redeploy.
+- [x] Run full closed-loop verification and redeploy.
