@@ -1,0 +1,77 @@
+{
+  "source": {
+    "id": "tps2660",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS2660",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/TPS2660",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps2660",
+    "topology": "integrated-efuse",
+    "familyLabel": "eFuse",
+    "fallback": {
+      "summary": "4.2-V to 60-V, 150-mOhm, 0.1-A to 2.23-A eFuse with reverse polarity protection.",
+      "status": "ACTIVE",
+      "vinMin": 4.2,
+      "vinMax": 60,
+      "currentLimitMax": 2.23,
+      "reverseProtection": true,
+      "thermalProtection": true,
+      "featureBullets": [
+        "Integrated reverse polarity protection",
+        "Adjustable current limiting",
+        "Integrated FET eFuse path"
+      ],
+      "pins": [
+        "IN",
+        "EN/UVLO",
+        "OVP",
+        "ILIM",
+        "OUT",
+        "PGOOD"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "TPS2660 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS2660 is a 4.2-V to 60-V, 150mOhm, 0.1-2.23A eFuse with integrated input reverse polarity protection. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "TPS2660 information, data sheet, packaging, support, training, schematic, order, eFuses (integrated hot swaps)",
+    "family": "339441_eFuses (integrated hot swaps)"
+  },
+  "normalized": {
+    "id": "tps2660",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS2660",
+    "title": "TPS2660 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS2660 is a 4.2-V to 60-V, 150mOhm, 0.1-2.23A eFuse with integrated input reverse polarity protection. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "eFuses (integrated hot swaps)",
+    "familyLabel": "eFuse",
+    "topology": "integrated-efuse",
+    "productUrl": "https://www.ti.com/product/TPS2660",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps2660",
+    "thresholds": {
+      "vinMin": 4.2,
+      "vinMax": 60,
+      "currentLimitMax": 2.23
+    },
+    "capabilities": {
+      "reverseProtection": true,
+      "thermalProtection": true,
+      "integratedFet": true
+    },
+    "featureBullets": [
+      "Integrated reverse polarity protection",
+      "Adjustable current limiting",
+      "Integrated FET eFuse path"
+    ],
+    "pins": [
+      "IN",
+      "EN/UVLO",
+      "OVP",
+      "ILIM",
+      "OUT",
+      "PGOOD"
+    ]
+  }
+}

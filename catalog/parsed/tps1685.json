@@ -1,0 +1,77 @@
+{
+  "source": {
+    "id": "tps1685",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS1685",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/TPS1685",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps1685",
+    "topology": "integrated-efuse",
+    "familyLabel": "eFuse",
+    "fallback": {
+      "summary": "9-V to 80-V, 3.5-mOhm, 20-A stackable integrated hot-swap eFuse.",
+      "status": "ACTIVE",
+      "vinMin": 9,
+      "vinMax": 80,
+      "currentLimitMax": 20,
+      "reverseProtection": true,
+      "thermalProtection": true,
+      "featureBullets": [
+        "High-current industrial eFuse",
+        "Fast current monitor and fault response",
+        "Reverse current blocking"
+      ],
+      "pins": [
+        "IN",
+        "EN",
+        "IMON",
+        "ILIM",
+        "OUT",
+        "FAULT"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "TPS1685 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS1685 is a 9V to 80V, 3.5mΩ, 20A stackable integrated hot swap (eFuse) with accurate and fast current monitor. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "TPS1685 information, data sheet, packaging, support, training, schematic, order, eFuses (integrated hot swaps)",
+    "family": "339441_eFuses (integrated hot swaps)"
+  },
+  "normalized": {
+    "id": "tps1685",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS1685",
+    "title": "TPS1685 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS1685 is a 9V to 80V, 3.5mΩ, 20A stackable integrated hot swap (eFuse) with accurate and fast current monitor. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "eFuses (integrated hot swaps)",
+    "familyLabel": "eFuse",
+    "topology": "integrated-efuse",
+    "productUrl": "https://www.ti.com/product/TPS1685",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps1685",
+    "thresholds": {
+      "vinMin": 9,
+      "vinMax": 80,
+      "currentLimitMax": 20
+    },
+    "capabilities": {
+      "reverseProtection": true,
+      "thermalProtection": true,
+      "integratedFet": true
+    },
+    "featureBullets": [
+      "High-current industrial eFuse",
+      "Fast current monitor and fault response",
+      "Reverse current blocking"
+    ],
+    "pins": [
+      "IN",
+      "EN",
+      "IMON",
+      "ILIM",
+      "OUT",
+      "FAULT"
+    ]
+  }
+}

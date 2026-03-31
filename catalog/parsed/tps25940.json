@@ -1,0 +1,75 @@
+{
+  "source": {
+    "id": "tps25940",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS25940",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/TPS25940",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps25940",
+    "topology": "integrated-efuse",
+    "familyLabel": "eFuse",
+    "fallback": {
+      "summary": "2.7-V to 18-V eFuse with low on-resistance and precise current limiting.",
+      "status": "ACTIVE",
+      "vinMin": 2.7,
+      "vinMax": 18,
+      "currentLimitMax": 5,
+      "reverseProtection": false,
+      "thermalProtection": true,
+      "featureBullets": [
+        "Integrated low-RDS(on) FET",
+        "Fast short-circuit response",
+        "Programmable current limit"
+      ],
+      "pins": [
+        "IN",
+        "EN/UVLO",
+        "ILIM",
+        "PG",
+        "OUT"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "TPS25940 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS25940 is a 2.7-V to 18-V, 42mΩ, 0.6-5.2A eFuse with reverse current blocking and DevSleep support. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "TPS25940 information, data sheet, packaging, support, training, schematic, order, eFuses (integrated hot swaps)",
+    "family": "339441_eFuses (integrated hot swaps)"
+  },
+  "normalized": {
+    "id": "tps25940",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS25940",
+    "title": "TPS25940 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS25940 is a 2.7-V to 18-V, 42mΩ, 0.6-5.2A eFuse with reverse current blocking and DevSleep support. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "eFuses (integrated hot swaps)",
+    "familyLabel": "eFuse",
+    "topology": "integrated-efuse",
+    "productUrl": "https://www.ti.com/product/TPS25940",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps25940",
+    "thresholds": {
+      "vinMin": 2.7,
+      "vinMax": 18,
+      "currentLimitMax": 5
+    },
+    "capabilities": {
+      "reverseProtection": false,
+      "thermalProtection": true,
+      "integratedFet": true
+    },
+    "featureBullets": [
+      "Integrated low-RDS(on) FET",
+      "Fast short-circuit response",
+      "Programmable current limit"
+    ],
+    "pins": [
+      "IN",
+      "EN/UVLO",
+      "ILIM",
+      "PG",
+      "OUT"
+    ]
+  }
+}

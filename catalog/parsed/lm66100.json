@@ -1,0 +1,71 @@
+{
+  "source": {
+    "id": "lm66100",
+    "vendor": "Texas Instruments",
+    "partNumber": "LM66100",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/LM66100",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/lm66100",
+    "topology": "ideal-diode",
+    "familyLabel": "Ideal diode",
+    "fallback": {
+      "summary": "1.5-V to 5.5-V, 1.5-A ideal diode with integrated FET.",
+      "status": "ACTIVE",
+      "vinMin": 1.5,
+      "vinMax": 5.5,
+      "currentLimitMax": 1.5,
+      "reverseProtection": true,
+      "thermalProtection": false,
+      "featureBullets": [
+        "Integrated ideal diode FET path",
+        "Reverse current blocking",
+        "Low quiescent current"
+      ],
+      "pins": [
+        "IN",
+        "OUT",
+        "GND"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "LM66100 data sheet, product information and support | TI.com",
+    "summary": "TI’s LM66100 is a 1.5-V to 5.5-V, 1.5-A, 0.5-µA IQ ideal diode with integrated FET. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "LM66100 information, data sheet, packaging, support, training, schematic, order, Ideal diode & ORing controllers",
+    "family": "422_Ideal diode & ORing controllers"
+  },
+  "normalized": {
+    "id": "lm66100",
+    "vendor": "Texas Instruments",
+    "partNumber": "LM66100",
+    "title": "LM66100 data sheet, product information and support | TI.com",
+    "summary": "TI’s LM66100 is a 1.5-V to 5.5-V, 1.5-A, 0.5-µA IQ ideal diode with integrated FET. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "Ideal diode & ORing controllers",
+    "familyLabel": "Ideal diode",
+    "topology": "ideal-diode",
+    "productUrl": "https://www.ti.com/product/LM66100",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/lm66100",
+    "thresholds": {
+      "vinMin": 1.5,
+      "vinMax": 5.5,
+      "currentLimitMax": 1.5
+    },
+    "capabilities": {
+      "reverseProtection": true,
+      "thermalProtection": false,
+      "integratedFet": true
+    },
+    "featureBullets": [
+      "Integrated ideal diode FET path",
+      "Reverse current blocking",
+      "Low quiescent current"
+    ],
+    "pins": [
+      "IN",
+      "OUT",
+      "GND"
+    ]
+  }
+}

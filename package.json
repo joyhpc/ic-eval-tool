@@ -7,9 +7,11 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "sync:catalog": "node scripts/sync-chip-catalog.js",
     "test": "node --test tests/*.test.js",
+    "verify:catalog": "node scripts/verify-catalog.js",
     "verify:module": "node scripts/verify-module.js lm5060",
-    "verify": "npm run verify:module && npm test && npm run lint && npm run build",
+    "verify": "npm run verify:catalog && npm run verify:module && npm test && npm run lint && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {

@@ -1,0 +1,77 @@
+{
+  "source": {
+    "id": "tps2490",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS2490",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/TPS2490",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps2490",
+    "topology": "external-mosfet-controller",
+    "familyLabel": "Hot-swap controller",
+    "fallback": {
+      "summary": "9-V to 80-V positive high-voltage power-limiting hot swap controller.",
+      "status": "ACTIVE",
+      "vinMin": 9,
+      "vinMax": 80,
+      "currentLimitMax": 10,
+      "reverseProtection": false,
+      "thermalProtection": false,
+      "featureBullets": [
+        "External N-channel MOSFET control",
+        "Programmable power limit and timer",
+        "Designed for high-voltage hot-swap rails"
+      ],
+      "pins": [
+        "VIN",
+        "EN",
+        "SENSE",
+        "TIMER",
+        "GATE",
+        "OUT"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "TPS2490 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS2490 is a 9-V to 80-V hot swap controller with power limiting and latch off. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "TPS2490 information, data sheet, packaging, support, training, schematic, order, Hot-swap controllers",
+    "family": "12872_Hot-swap controllers"
+  },
+  "normalized": {
+    "id": "tps2490",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS2490",
+    "title": "TPS2490 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS2490 is a 9-V to 80-V hot swap controller with power limiting and latch off. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "Hot-swap controllers",
+    "familyLabel": "Hot-swap controller",
+    "topology": "external-mosfet-controller",
+    "productUrl": "https://www.ti.com/product/TPS2490",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps2490",
+    "thresholds": {
+      "vinMin": 9,
+      "vinMax": 80,
+      "currentLimitMax": 10
+    },
+    "capabilities": {
+      "reverseProtection": false,
+      "thermalProtection": false,
+      "integratedFet": false
+    },
+    "featureBullets": [
+      "External N-channel MOSFET control",
+      "Programmable power limit and timer",
+      "Designed for high-voltage hot-swap rails"
+    ],
+    "pins": [
+      "VIN",
+      "EN",
+      "SENSE",
+      "TIMER",
+      "GATE",
+      "OUT"
+    ]
+  }
+}

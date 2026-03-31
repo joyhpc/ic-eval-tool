@@ -26,11 +26,17 @@ import {
   formatTimerCurrent,
 } from './lib/lm5060.js';
 import Lm5060Schematic from './components/Lm5060Schematic.jsx';
+import ChipCatalogWorkbench from './components/ChipCatalogWorkbench.jsx';
+import {
+  CHIP_CATALOG_ENTRIES,
+  CHIP_CATALOG_SOURCE,
+} from './data/chips.generated.js';
 
 export default function App() {
   const [hwParams, setHwParams] = useState(DEFAULT_HW_PARAMS);
   const [pinnedHotspotId, setPinnedHotspotId] = useState('controller');
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
+  const [selectedDetailedChipId, setSelectedDetailedChipId] = useState('lm5060');
   const inputRefs = useRef({});
 
   const handleHwChange = (e) => {
@@ -182,91 +188,99 @@ export default function App() {
           </div>
         </div>
 
-        <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
-          <div className="flex items-center gap-2 border-b border-gray-100 bg-slate-900 p-4 text-white">
-            <CircuitBoard className="h-5 w-5" />
-            <div>
-              <h2 className="text-lg font-semibold">0. 简化原理图交互视图</h2>
-              <p className="text-sm text-slate-300">
-                这张图只保留支撑 LM5060 模块决策的关键要素，点击任意模块会联动对应输入项。
-              </p>
+        <ChipCatalogWorkbench
+          catalogEntries={CHIP_CATALOG_ENTRIES}
+          sourceMeta={CHIP_CATALOG_SOURCE}
+          onDetailedChipChange={setSelectedDetailedChipId}
+        />
+
+        {selectedDetailedChipId === 'lm5060' ? (
+          <>
+            <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
+              <div className="flex items-center gap-2 border-b border-gray-100 bg-slate-900 p-4 text-white">
+                <CircuitBoard className="h-5 w-5" />
+                <div>
+                  <h2 className="text-lg font-semibold">LM5060 简化原理图交互视图</h2>
+                  <p className="text-sm text-slate-300">
+                    这张图只保留支撑 LM5060 模块决策的关键要素，点击任意模块会联动对应输入项。
+                  </p>
+                </div>
+              </div>
+              <div className="grid gap-6 p-6 lg:grid-cols-[1.7fr_0.9fr]">
+                <Lm5060Schematic
+                  viewModel={schematicViewModel}
+                  onSelectHotspot={handleSelectHotspot}
+                  onHoverHotspot={(hotspot) => setHoveredHotspotId(hotspot.id)}
+                  onLeaveHotspot={() => setHoveredHotspotId(null)}
+                />
+                <div className="space-y-4">
+                  <div className={`rounded-xl border p-4 ${getStateColor(simResults.stateKey)}`}>
+                    <div className="text-xs font-semibold uppercase tracking-wide opacity-70">
+                      Active Module
+                    </div>
+                    <div className="mt-2 text-lg font-semibold">{LM5060_MODULE_DEFINITION.name}</div>
+                    <p className="mt-2 text-sm leading-6">
+                      {LM5060_MODULE_DEFINITION.description}
+                    </p>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      悬浮 / 选中探针
+                    </div>
+                    <div className="mt-2 text-lg font-semibold text-slate-900">
+                      {schematicViewModel.inspector.title}
+                    </div>
+                    <p className="mt-2 text-sm leading-6 text-slate-700">
+                      {schematicViewModel.inspector.description}
+                    </p>
+                    <div className="mt-4 rounded-lg bg-white p-3">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        实时读数
+                      </div>
+                      <div className="mt-1 font-mono text-sm text-slate-900">
+                        {schematicViewModel.inspector.value}
+                      </div>
+                    </div>
+                    <div className="mt-3 rounded-lg bg-white p-3">
+                      <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                        当前状态
+                      </div>
+                      <div className="mt-1 text-sm text-slate-900">{schematicViewModel.inspector.stateSummary}</div>
+                    </div>
+                    <div className="mt-3 text-xs text-slate-500">
+                      {selectedFocusField
+                        ? `点击后会定位到输入字段：${selectedFocusField}`
+                        : '该元件当前没有直接绑定到单一输入字段。'}
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                    <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                      可交互元件
+                    </div>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                      {schematicViewModel.hotspots.map((hotspot) => (
+                        <button
+                          key={hotspot.id}
+                          type="button"
+                          onClick={() => handleSelectHotspot(hotspot)}
+                          className={`rounded-lg border px-3 py-2 text-left transition ${
+                            hotspot.isSelected
+                              ? 'border-blue-300 bg-blue-50 text-blue-900'
+                              : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                          }`}
+                        >
+                          {hotspot.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="grid gap-6 p-6 lg:grid-cols-[1.7fr_0.9fr]">
-            <Lm5060Schematic
-              viewModel={schematicViewModel}
-              onSelectHotspot={handleSelectHotspot}
-              onHoverHotspot={(hotspot) => setHoveredHotspotId(hotspot.id)}
-              onLeaveHotspot={() => setHoveredHotspotId(null)}
-            />
-            <div className="space-y-4">
-              <div className={`rounded-xl border p-4 ${getStateColor(simResults.stateKey)}`}>
-                <div className="text-xs font-semibold uppercase tracking-wide opacity-70">
-                  Active Module
-                </div>
-                <div className="mt-2 text-lg font-semibold">{LM5060_MODULE_DEFINITION.name}</div>
-                <p className="mt-2 text-sm leading-6">
-                  {LM5060_MODULE_DEFINITION.description}
-                </p>
-              </div>
 
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  悬浮 / 选中探针
-                </div>
-                <div className="mt-2 text-lg font-semibold text-slate-900">
-                  {schematicViewModel.inspector.title}
-                </div>
-                <p className="mt-2 text-sm leading-6 text-slate-700">
-                  {schematicViewModel.inspector.description}
-                </p>
-                <div className="mt-4 rounded-lg bg-white p-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    实时读数
-                  </div>
-                  <div className="mt-1 font-mono text-sm text-slate-900">
-                    {schematicViewModel.inspector.value}
-                  </div>
-                </div>
-                <div className="mt-3 rounded-lg bg-white p-3">
-                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                    当前状态
-                  </div>
-                  <div className="mt-1 text-sm text-slate-900">{schematicViewModel.inspector.stateSummary}</div>
-                </div>
-                <div className="mt-3 text-xs text-slate-500">
-                  {selectedFocusField
-                    ? `点击后会定位到输入字段：${selectedFocusField}`
-                    : '该元件当前没有直接绑定到单一输入字段。'}
-                </div>
-              </div>
-
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
-                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
-                  可交互元件
-                </div>
-                <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
-                  {schematicViewModel.hotspots.map((hotspot) => (
-                    <button
-                      key={hotspot.id}
-                      type="button"
-                      onClick={() => handleSelectHotspot(hotspot)}
-                      className={`rounded-lg border px-3 py-2 text-left transition ${
-                        hotspot.isSelected
-                          ? 'border-blue-300 bg-blue-50 text-blue-900'
-                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
-                      }`}
-                    >
-                      {hotspot.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-2">
+            <div className="grid gap-6 lg:grid-cols-2">
           <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
             <div className="flex items-center gap-2 bg-slate-800 p-4 text-white">
               <Calculator className="h-5 w-5" />
@@ -577,7 +591,14 @@ export default function App() {
               </div>
             </div>
           </div>
-        </div>
+            </div>
+          </>
+        ) : (
+          <div className="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-sm text-slate-600 shadow-sm">
+            当前已切换到 {selectedDetailedChipId.toUpperCase()}。上方 Catalog Workbench 已提供基于解析文件的可视化操控；
+            下方这套详细公式计算器和状态机是 LM5060 专用模块，因此在非 LM5060 选择时自动收起，避免把工程师带入错误模型。
+          </div>
+        )}
       </div>
     </div>
   );

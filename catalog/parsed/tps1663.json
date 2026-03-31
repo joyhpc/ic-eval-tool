@@ -1,0 +1,77 @@
+{
+  "source": {
+    "id": "tps1663",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS1663",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/TPS1663",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps1663",
+    "topology": "integrated-efuse",
+    "familyLabel": "eFuse",
+    "fallback": {
+      "summary": "4.5-V to 60-V, 31-mOhm, 0.6-A to 6-A eFuse with output power limiting.",
+      "status": "ACTIVE",
+      "vinMin": 4.5,
+      "vinMax": 60,
+      "currentLimitMax": 6,
+      "reverseProtection": false,
+      "thermalProtection": true,
+      "featureBullets": [
+        "Power limiting and inrush control",
+        "Integrated FET eFuse path",
+        "Designed for industrial rails"
+      ],
+      "pins": [
+        "IN",
+        "EN/UVLO",
+        "OVP",
+        "ILIM",
+        "OUT",
+        "PGTH"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "TPS1663 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS1663 is a 4.5-V to 60-V, 31mΩ, 0.6-6A eFuse with output power limiting. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "TPS1663 information, data sheet, packaging, support, training, schematic, order, eFuses (integrated hot swaps)",
+    "family": "339441_eFuses (integrated hot swaps)"
+  },
+  "normalized": {
+    "id": "tps1663",
+    "vendor": "Texas Instruments",
+    "partNumber": "TPS1663",
+    "title": "TPS1663 data sheet, product information and support | TI.com",
+    "summary": "TI’s TPS1663 is a 4.5-V to 60-V, 31mΩ, 0.6-6A eFuse with output power limiting. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "eFuses (integrated hot swaps)",
+    "familyLabel": "eFuse",
+    "topology": "integrated-efuse",
+    "productUrl": "https://www.ti.com/product/TPS1663",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/tps1663",
+    "thresholds": {
+      "vinMin": 4.5,
+      "vinMax": 60,
+      "currentLimitMax": 6
+    },
+    "capabilities": {
+      "reverseProtection": false,
+      "thermalProtection": true,
+      "integratedFet": true
+    },
+    "featureBullets": [
+      "Power limiting and inrush control",
+      "Integrated FET eFuse path",
+      "Designed for industrial rails"
+    ],
+    "pins": [
+      "IN",
+      "EN/UVLO",
+      "OVP",
+      "ILIM",
+      "OUT",
+      "PGTH"
+    ]
+  }
+}

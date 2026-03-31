@@ -1,0 +1,81 @@
+{
+  "source": {
+    "id": "lm5060",
+    "vendor": "Texas Instruments",
+    "partNumber": "LM5060",
+    "sourceType": "ti-product",
+    "productUrl": "https://www.ti.com/product/LM5060",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/lm5060",
+    "topology": "external-mosfet-controller",
+    "familyLabel": "Hot-swap controller",
+    "fallback": {
+      "summary": "5.5-V to 65-V high-side protection controller for hot-swap and inrush control.",
+      "status": "ACTIVE",
+      "vinMin": 5.5,
+      "vinMax": 65,
+      "currentLimitMax": 30,
+      "reverseProtection": true,
+      "thermalProtection": false,
+      "featureBullets": [
+        "External MOSFET hot-swap controller",
+        "Programmable UVLO and OVP",
+        "Fault timer and latch-off flow"
+      ],
+      "pins": [
+        "VIN",
+        "EN",
+        "UVLO",
+        "OVP",
+        "SENSE",
+        "TIMER",
+        "GATE",
+        "PGD"
+      ]
+    }
+  },
+  "parsed": {
+    "title": "LM5060 data sheet, product information and support | TI.com",
+    "summary": "TI’s LM5060 is a 5.5-V to 65-V high side protection controller. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "keywords": "LM5060 information, data sheet, packaging, support, training, schematic, order, Hot-swap controllers",
+    "family": "12872_Hot-swap controllers"
+  },
+  "normalized": {
+    "id": "lm5060",
+    "vendor": "Texas Instruments",
+    "partNumber": "LM5060",
+    "title": "LM5060 data sheet, product information and support | TI.com",
+    "summary": "TI’s LM5060 is a 5.5-V to 65-V high side protection controller. Find parameters, ordering and quality information",
+    "status": "ACTIVE",
+    "family": "Hot-swap controllers",
+    "familyLabel": "Hot-swap controller",
+    "topology": "external-mosfet-controller",
+    "productUrl": "https://www.ti.com/product/LM5060",
+    "datasheetUrl": "https://www.ti.com/lit/gpn/lm5060",
+    "thresholds": {
+      "vinMin": 5.5,
+      "vinMax": 65,
+      "currentLimitMax": 30
+    },
+    "capabilities": {
+      "reverseProtection": true,
+      "thermalProtection": false,
+      "integratedFet": false
+    },
+    "featureBullets": [
+      "External MOSFET hot-swap controller",
+      "Programmable UVLO and OVP",
+      "Fault timer and latch-off flow"
+    ],
+    "pins": [
+      "VIN",
+      "EN",
+      "UVLO",
+      "OVP",
+      "SENSE",
+      "TIMER",
+      "GATE",
+      "PGD"
+    ]
+  }
+}

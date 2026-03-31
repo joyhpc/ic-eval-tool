@@ -14,3 +14,8 @@
 - [x] Add a CLI verifier that checks the module definition and scenario coverage.
 - [x] Extend automated tests to cover schematic bindings and verifier logic.
 - [x] Run full closed-loop verification and redeploy.
+- [x] Build a normalized multi-chip catalog from live datasheet sources with local cache.
+- [x] Add a generic visualization workbench that maps parsed chip files to controls and schematic state.
+- [x] Add CLI sync and verification commands for the catalog pipeline.
+- [x] Extend automated tests to cover catalog parsing, generic chip evaluation, and UI data mapping.
+- [ ] Run full closed-loop verification, self-review, push, and redeploy.
