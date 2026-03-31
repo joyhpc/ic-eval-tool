@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Calculator,
   Activity,
+  CircuitBoard,
   Zap,
   AlertTriangle,
   Power,
@@ -9,47 +10,33 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import {
+  buildLm5060SchematicViewModel,
+  LM5060_MODULE_DEFINITION,
+} from './lib/lm5060Module.js';
+import {
+  computeHardwareResults,
+  DEFAULT_HW_PARAMS,
+} from './lib/lm5060Hardware.js';
+import {
   DEFAULT_SIM_PARAMS,
   SIM_THRESHOLDS,
   deriveSimulationState,
   evolveSimulation,
   formatGateCurrent,
   formatTimerCurrent,
-} from './lib/lm5060';
+} from './lib/lm5060.js';
+import Lm5060Schematic from './components/Lm5060Schematic.jsx';
 
 export default function App() {
-  const [hwParams, setHwParams] = useState({
-    vinMin: 9.0,
-    vinMax: 36.0,
-    iLimit: 30.0,
-    rdsOn: 5.0,
-    ocpDelay: 12.0,
-    dvdt: 0.5,
-  });
+  const [hwParams, setHwParams] = useState(DEFAULT_HW_PARAMS);
+  const [pinnedHotspotId, setPinnedHotspotId] = useState('controller');
+  const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
+  const inputRefs = useRef({});
 
   const handleHwChange = (e) => {
     setHwParams({ ...hwParams, [e.target.name]: parseFloat(e.target.value) || 0 });
   };
-
-  const { vinMin, vinMax, iLimit, rdsOn, ocpDelay, dvdt } = hwParams;
-  const OVP_TH = 2.0;
-  const UVLO_TH = 1.6;
-  const UVLO_BIAS = 0.0055;
-  const R8 = 10 * (vinMax - OVP_TH) / OVP_TH;
-  const R10 = (vinMin - UVLO_TH) / (UVLO_BIAS + (UVLO_TH / 10));
-  const C_TIMER = (ocpDelay * 11) / 2.0;
-  const vDsth = iLimit * (rdsOn / 1000);
-  const Rs = (vDsth / 16e-6) + ((10e3 * 8e-6) / 16e-6);
-  const C_GATE = (24 / (dvdt * 1000)) * 1e6;
-
-  const hwResults = {
-    R8: R8 > 0 ? R8.toFixed(2) : "0.00",
-    R10: R10 > 0 ? R10.toFixed(2) : "0.00",
-    C_TIMER: C_TIMER.toFixed(1),
-    Rs: Rs.toFixed(2),
-    C_GATE: C_GATE.toFixed(1),
-    V_DSTH: (vDsth * 1000).toFixed(1),
-  };
+  const hwResults = useMemo(() => computeHardwareResults(hwParams), [hwParams]);
   const timerCapValue = hwResults.C_TIMER;
   const gateCapValue = hwResults.C_GATE;
 
@@ -122,6 +109,45 @@ export default function App() {
   };
 
   const simResults = deriveSimulationState(simParams, faultLatch);
+  const activeHotspotId = hoveredHotspotId ?? pinnedHotspotId;
+  const schematicViewModel = useMemo(
+    () =>
+      buildLm5060SchematicViewModel({
+        hwParams,
+        hwResults,
+        simParams,
+        simResults,
+        faultLatch,
+        selectedHotspotId: activeHotspotId,
+      }),
+    [activeHotspotId, faultLatch, hwParams, hwResults, simParams, simResults],
+  );
+  const selectedFocusField = schematicViewModel.inspector.focusField;
+
+  const registerInputRef = (fieldName) => (element) => {
+    if (element) {
+      inputRefs.current[fieldName] = element;
+    }
+  };
+
+  const focusField = (fieldName) => {
+    if (!fieldName) {
+      return;
+    }
+
+    const element = inputRefs.current[fieldName];
+    if (!element) {
+      return;
+    }
+
+    element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    element.focus();
+  };
+
+  const handleSelectHotspot = (hotspot) => {
+    setPinnedHotspotId(hotspot.id);
+    focusField(hotspot.focusField);
+  };
 
   const getStateColor = (stateKey) => {
     if (stateKey === 'run') return 'bg-green-100 text-green-800 border-green-300';
@@ -156,6 +182,90 @@ export default function App() {
           </div>
         </div>
 
+        <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
+          <div className="flex items-center gap-2 border-b border-gray-100 bg-slate-900 p-4 text-white">
+            <CircuitBoard className="h-5 w-5" />
+            <div>
+              <h2 className="text-lg font-semibold">0. 简化原理图交互视图</h2>
+              <p className="text-sm text-slate-300">
+                这张图只保留支撑 LM5060 模块决策的关键要素，点击任意模块会联动对应输入项。
+              </p>
+            </div>
+          </div>
+          <div className="grid gap-6 p-6 lg:grid-cols-[1.7fr_0.9fr]">
+            <Lm5060Schematic
+              viewModel={schematicViewModel}
+              onSelectHotspot={handleSelectHotspot}
+              onHoverHotspot={(hotspot) => setHoveredHotspotId(hotspot.id)}
+              onLeaveHotspot={() => setHoveredHotspotId(null)}
+            />
+            <div className="space-y-4">
+              <div className={`rounded-xl border p-4 ${getStateColor(simResults.stateKey)}`}>
+                <div className="text-xs font-semibold uppercase tracking-wide opacity-70">
+                  Active Module
+                </div>
+                <div className="mt-2 text-lg font-semibold">{LM5060_MODULE_DEFINITION.name}</div>
+                <p className="mt-2 text-sm leading-6">
+                  {LM5060_MODULE_DEFINITION.description}
+                </p>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  悬浮 / 选中探针
+                </div>
+                <div className="mt-2 text-lg font-semibold text-slate-900">
+                  {schematicViewModel.inspector.title}
+                </div>
+                <p className="mt-2 text-sm leading-6 text-slate-700">
+                  {schematicViewModel.inspector.description}
+                </p>
+                <div className="mt-4 rounded-lg bg-white p-3">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    实时读数
+                  </div>
+                  <div className="mt-1 font-mono text-sm text-slate-900">
+                    {schematicViewModel.inspector.value}
+                  </div>
+                </div>
+                <div className="mt-3 rounded-lg bg-white p-3">
+                  <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                    当前状态
+                  </div>
+                  <div className="mt-1 text-sm text-slate-900">{schematicViewModel.inspector.stateSummary}</div>
+                </div>
+                <div className="mt-3 text-xs text-slate-500">
+                  {selectedFocusField
+                    ? `点击后会定位到输入字段：${selectedFocusField}`
+                    : '该元件当前没有直接绑定到单一输入字段。'}
+                </div>
+              </div>
+
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4">
+                <div className="text-xs font-semibold uppercase tracking-wide text-slate-500">
+                  可交互元件
+                </div>
+                <div className="mt-3 grid grid-cols-2 gap-2 text-sm">
+                  {schematicViewModel.hotspots.map((hotspot) => (
+                    <button
+                      key={hotspot.id}
+                      type="button"
+                      onClick={() => handleSelectHotspot(hotspot)}
+                      className={`rounded-lg border px-3 py-2 text-left transition ${
+                        hotspot.isSelected
+                          ? 'border-blue-300 bg-blue-50 text-blue-900'
+                          : 'border-slate-200 bg-white text-slate-700 hover:border-slate-300'
+                      }`}
+                    >
+                      {hotspot.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="grid gap-6 lg:grid-cols-2">
           <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
             <div className="flex items-center gap-2 bg-slate-800 p-4 text-white">
@@ -172,8 +282,13 @@ export default function App() {
                     type="number"
                     name="vinMin"
                     value={hwParams.vinMin}
+                    ref={registerInputRef('vinMin')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'vinMin'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
                 <div>
@@ -184,8 +299,13 @@ export default function App() {
                     type="number"
                     name="vinMax"
                     value={hwParams.vinMax}
+                    ref={registerInputRef('vinMax')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'vinMax'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
                 <div>
@@ -196,8 +316,13 @@ export default function App() {
                     type="number"
                     name="iLimit"
                     value={hwParams.iLimit}
+                    ref={registerInputRef('iLimit')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'iLimit'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
                 <div>
@@ -208,8 +333,13 @@ export default function App() {
                     type="number"
                     name="rdsOn"
                     value={hwParams.rdsOn}
+                    ref={registerInputRef('rdsOn')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'rdsOn'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
                 <div>
@@ -220,8 +350,13 @@ export default function App() {
                     type="number"
                     name="ocpDelay"
                     value={hwParams.ocpDelay}
+                    ref={registerInputRef('ocpDelay')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'ocpDelay'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
                 <div>
@@ -232,8 +367,13 @@ export default function App() {
                     type="number"
                     name="dvdt"
                     value={hwParams.dvdt}
+                    ref={registerInputRef('dvdt')}
                     onChange={handleHwChange}
-                    className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className={`w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 ${
+                      selectedFocusField === 'dvdt'
+                        ? 'border-blue-500 ring-2 ring-blue-200'
+                        : 'border-gray-300 focus:ring-blue-500'
+                    }`}
                   />
                 </div>
               </div>
@@ -316,9 +456,12 @@ export default function App() {
                       min={input.min}
                       max={input.max}
                       step={input.step}
+                      ref={registerInputRef(input.name)}
                       value={simParams[input.name]}
                       onChange={handleSimChange}
-                      className="w-full accent-blue-600"
+                      className={`w-full accent-blue-600 ${
+                        selectedFocusField === input.name ? 'ring-2 ring-blue-200' : ''
+                      }`}
                     />
                   </div>
                 ))}

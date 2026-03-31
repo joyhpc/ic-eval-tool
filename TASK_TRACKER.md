@@ -9,3 +9,8 @@
 - [x] Perform a final self-review and deploy the corrected build to Vercel.
 - [x] Initialize git metadata for the current project state.
 - [x] Create a public GitHub repository and push the `main` branch.
+- [x] Add a simplified schematic model for the LM5060 module.
+- [x] Build an interactive SVG schematic view bound to calculator and simulator state.
+- [x] Add a CLI verifier that checks the module definition and scenario coverage.
+- [x] Extend automated tests to cover schematic bindings and verifier logic.
+- [ ] Run full closed-loop verification and redeploy.
