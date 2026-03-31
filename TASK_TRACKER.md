@@ -7,5 +7,5 @@
 - [x] Update the React UI to expose auto-simulation controls and clearer state output.
 - [x] Run test/build/lint verification until all checks pass.
 - [x] Perform a final self-review and deploy the corrected build to Vercel.
-- [ ] Initialize git metadata for the current project state.
-- [ ] Create a public GitHub repository and push the `main` branch.
+- [x] Initialize git metadata for the current project state.
+- [x] Create a public GitHub repository and push the `main` branch.
