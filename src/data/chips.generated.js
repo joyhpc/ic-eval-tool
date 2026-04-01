@@ -1,5 +1,5 @@
-export const CHIP_CATALOG_GENERATED_AT = "2026-03-31T17:58:07.800Z";
-export const CHIP_CATALOG_SOURCE = {"requestedSource":"OpenDataSheet","activeSource":"official-vendor-pages","note":"OpenDataSheet was unavailable during sync, so official product pages were used as the live source.","issues":[]};
+export const CHIP_CATALOG_GENERATED_AT = "2026-03-31T23:59:28.788Z";
+export const CHIP_CATALOG_SOURCE = {"requestedSource":"OpenDataSheet","activeSource":"official-vendor-pages","note":"OpenDataSheet was unavailable during sync, so official product pages were used as the live source.","issues":["OpenDataSheet endpoint resolved to a parked/unavailable page during sync, so the pipeline fell back to official vendor product pages."]};
 export const CHIP_CATALOG_ENTRIES = [
   {
     "id": "lm5060",

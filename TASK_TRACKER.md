@@ -19,3 +19,7 @@
 - [x] Add CLI sync and verification commands for the catalog pipeline.
 - [x] Extend automated tests to cover catalog parsing, generic chip evaluation, and UI data mapping.
 - [x] Run full closed-loop verification, self-review, push, and redeploy.
+- [x] Upgrade the LM5060 hardware calculator to support simple and deep-insight modes.
+- [x] Model hardware sizing against internal LM5060 architecture blocks and expose the effect chain in UI.
+- [x] Add tests for hardware insight calculations and explanatory model integrity.
+- [x] Run full closed-loop verification, push, and redeploy the hardware calculator upgrade.

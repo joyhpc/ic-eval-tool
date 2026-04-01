@@ -16,6 +16,7 @@ import {
 import {
   computeHardwareResults,
   DEFAULT_HW_PARAMS,
+  buildLm5060HardwareInsightModel,
 } from './lib/lm5060Hardware.js';
 import {
   DEFAULT_SIM_PARAMS,
@@ -27,6 +28,7 @@ import {
 } from './lib/lm5060.js';
 import Lm5060Schematic from './components/Lm5060Schematic.jsx';
 import ChipCatalogWorkbench from './components/ChipCatalogWorkbench.jsx';
+import Lm5060HardwareInsight from './components/Lm5060HardwareInsight.jsx';
 import {
   CHIP_CATALOG_ENTRIES,
   CHIP_CATALOG_SOURCE,
@@ -37,12 +39,18 @@ export default function App() {
   const [pinnedHotspotId, setPinnedHotspotId] = useState('controller');
   const [hoveredHotspotId, setHoveredHotspotId] = useState(null);
   const [selectedDetailedChipId, setSelectedDetailedChipId] = useState('lm5060');
+  const [hardwareMode, setHardwareMode] = useState('simple');
+  const [selectedHardwareInsightId, setSelectedHardwareInsightId] = useState('uvlo');
   const inputRefs = useRef({});
 
   const handleHwChange = (e) => {
     setHwParams({ ...hwParams, [e.target.name]: parseFloat(e.target.value) || 0 });
   };
   const hwResults = useMemo(() => computeHardwareResults(hwParams), [hwParams]);
+  const hardwareInsightModel = useMemo(
+    () => buildLm5060HardwareInsightModel(hwParams, selectedHardwareInsightId),
+    [hwParams, selectedHardwareInsightId],
+  );
   const timerCapValue = hwResults.C_TIMER;
   const gateCapValue = hwResults.C_GATE;
 
@@ -284,9 +292,39 @@ export default function App() {
           <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm">
             <div className="flex items-center gap-2 bg-slate-800 p-4 text-white">
               <Calculator className="h-5 w-5" />
-              <h2 className="text-lg font-semibold">1. 外围硬件参数计算器</h2>
+              <div className="flex-1">
+                <h2 className="text-lg font-semibold">1. 外围硬件参数计算器</h2>
+                <p className="text-sm text-slate-300">
+                  保持快速 BOM 推荐，同时允许切到深度洞察模式，看到配置如何穿过芯片内部架构起作用。
+                </p>
+              </div>
             </div>
             <div className="space-y-6 p-6">
+              <div className="flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  onClick={() => setHardwareMode('simple')}
+                  className={`rounded-lg border px-3 py-2 text-sm transition ${
+                    hardwareMode === 'simple'
+                      ? 'border-slate-900 bg-slate-900 text-white'
+                      : 'border-slate-300 bg-white text-slate-700 hover:border-slate-400'
+                  }`}
+                >
+                  简单模式
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setHardwareMode('deep')}
+                  className={`rounded-lg border px-3 py-2 text-sm transition ${
+                    hardwareMode === 'deep'
+                      ? 'border-blue-700 bg-blue-700 text-white'
+                      : 'border-slate-300 bg-white text-slate-700 hover:border-slate-400'
+                  }`}
+                >
+                  深度洞察
+                </button>
+              </div>
+
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="mb-1 block text-sm font-medium text-gray-700">
@@ -426,6 +464,20 @@ export default function App() {
                   * Rs 计算已默认包含 Ro=10kΩ 的防反接偏置电流补偿。
                 </p>
               </div>
+
+              {hardwareMode === 'deep' ? (
+                <Lm5060HardwareInsight
+                  model={hardwareInsightModel}
+                  onSelectInsight={setSelectedHardwareInsightId}
+                  onFocusField={focusField}
+                />
+              ) : (
+                <div className="rounded-xl border border-dashed border-slate-300 bg-white p-4 text-sm leading-6 text-slate-600">
+                  简单模式只保留外围参数到 BOM 推荐值的快速映射，适合先把 UVLO / OVP / TIMER / GATE / SENSE
+                  的初值算出来。切到“深度洞察”后，会展开这些参数如何穿过内部比较器、电流源、故障锁存和
+                  GATE 驱动链路起作用。
+                </div>
+              )}
             </div>
           </div>
 

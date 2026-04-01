@@ -4,6 +4,7 @@ Web-based IC hardware evaluation toolkit built with React, Vite, and Tailwind CS
 
 The current shipped module is the LM5060 evaluator:
 - Hardware calculator for UVLO / OVP / TIMER / GATE sizing
+- Dual hardware-calculator modes: quick sizing and deep architectural insight
 - Pin-level behavior simulator with latch-off and fault timing
 - Automatic TIMER / GATE evolution based on computed capacitance values
 - Simplified interactive schematic with cross-probing between diagram and inputs
@@ -41,6 +42,7 @@ The tool now also includes a multi-chip catalog workbench backed by normalized p
 - `src/data/chips.generated.js`
 
 The requested upstream source is OpenDataSheet, but the current sync falls back to official vendor product pages because `opendatasheet.com` was unavailable during implementation.
+That fallback is tracked explicitly in `issues/opendatasheet-source-unavailable.md` so the source adapter can be switched back later without losing the parsing workflow.
 
 ## Deployment
 

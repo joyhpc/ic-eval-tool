@@ -14,6 +14,8 @@ import {
 const projectRoot = '/home/ubuntu/ic-eval-tool';
 const parsedDir = path.join(projectRoot, 'catalog', 'parsed');
 const generatedModulePath = path.join(projectRoot, 'src', 'data', 'chips.generated.js');
+const issuesDir = path.join(projectRoot, 'issues');
+const sourceIssuePath = path.join(issuesDir, 'opendatasheet-source-unavailable.md');
 
 async function fetchHtml(url) {
   const response = await fetch(url, {
@@ -32,6 +34,7 @@ async function fetchHtml(url) {
 
 async function sync() {
   await fs.mkdir(parsedDir, { recursive: true });
+  await fs.mkdir(issuesDir, { recursive: true });
 
   const entries = [];
   const issues = [];
@@ -72,17 +75,33 @@ async function sync() {
       requestedSource: 'OpenDataSheet',
       activeSource: 'official-vendor-pages',
       note: 'OpenDataSheet was unavailable during sync, so official product pages were used as the live source.',
-      issues,
+      issues: [
+        'OpenDataSheet endpoint resolved to a parked/unavailable page during sync, so the pipeline fell back to official vendor product pages.',
+        ...issues,
+      ],
     },
     entries,
   };
 
   await fs.writeFile(generatedModulePath, serializeCatalogModule(catalog), 'utf8');
+  await fs.writeFile(
+    sourceIssuePath,
+    `# OpenDataSheet Source Issue
+
+- Requested source: OpenDataSheet
+- Active source: official-vendor-pages
+- Observed behavior: \`https://opendatasheet.com\` redirected to an unavailable parked page during sync
+- Impact: live parsed chip files could not be sourced from OpenDataSheet
+- Current fallback: official vendor product pages are parsed and normalized into \`catalog/parsed/*.json\`
+- Next action when source returns: add an OpenDataSheet adapter in \`scripts/sync-chip-catalog.js\` and switch \`activeSource\` back
+`,
+    'utf8',
+  );
 
   console.log(`Synced ${entries.length} chip entries.`);
-  if (issues.length > 0) {
+  if (catalog.source.issues.length > 0) {
     console.log('Source issues:');
-    for (const issue of issues) {
+    for (const issue of catalog.source.issues) {
       console.log(`- ${issue}`);
     }
   }
